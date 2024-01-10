@@ -11,11 +11,13 @@ public class PlayerMovement : MonoBehaviour
     public int Coins;
     private int TotalCoins;
     public Text coinText;
+    private int NextSceneToLoad;
 
     // Start is called before the first frame update
     void Start()
     {
-        TotalCoins = GameObject.FindGameObjectsWithTag("Coins").Length;
+        TotalCoins = GameObject.FindGameObjectsWithTag("Coin").Length;
+        NextSceneToLoad = SceneManager.GetActiveScene().buildIndex + 1;
     }
 
     // Update is called once per frame
@@ -26,6 +28,11 @@ public class PlayerMovement : MonoBehaviour
         Vector3 movement = new Vector3(MoveHorizontal, 0, MoveVertical);
         transform.Translate(movement * Time.deltaTime * speed);
     }
+    void Update()
+    {
+        coinText.text = "Coins Collected: " + Coins;
+    }
+
 
     public void OnCollisionEnter(Collision collision)
     {
@@ -40,7 +47,7 @@ public class PlayerMovement : MonoBehaviour
             Destroy(collision.gameObject);
             if (Coins == TotalCoins)
             {
-                SceneManager.LoadScene("Level 2");
+                SceneManager.LoadScene(NextSceneToLoad);
             }
         }
     }
